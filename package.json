@@ -4,7 +4,7 @@
   "description": "removes duplicates from a list of emails",
   "main": "app.js",
   "scripts": {
-   "start": "app.js"
+   "start": "node app.js"
   },
   "dependencies": {
     "ejs": "^2.5.7",
