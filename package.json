@@ -1,0 +1,19 @@
+{
+  "name": "chef-steps-dupes",
+  "version": "1.0.0",
+  "description": "removes duplicates from a list of emails",
+  "main": "app.js",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.15.4"
+  },
+  "engines": {
+    "node": "6.11.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "leighton-chen",
+  "license": "ISC"
+}

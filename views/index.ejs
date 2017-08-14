@@ -1,0 +1,144 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body onload="generateEmails(100000)">
+	<h1>Email List</h1>
+  <% var emails = {}; %>
+  <% var count = 0; %>
+
+  <textarea id="emailList" cols="150" rows="50"></textarea>
+  <br>
+  Count:
+  <input type="text" id="count" disabled/>
+  <br>
+  Elapsed Time:
+  <input type="text" id="time" disabled/>
+  <br>
+  <input type="button" id="removeDuplicates" value="Remove Duplicates" onclick="removeDuplicates(emails)"/>
+
+  <script>
+    // generate 100,000 random email addresses
+    // with 50% of them being duplicates
+    // the resulting list will be in random order
+    function generateEmails(total) {
+    	var head = new Node("start");
+    	var curr = head;
+    	var result = [];
+      var domains = ['@hotmail.com', '@gmail.com', '@yahoo.com'];
+
+    	for (var i = 0; i < total/2; ++i) {
+    		var email = (Math.random() + 1).toString(36).substring(5);
+        var domain = Math.floor(Math.random() * 3);
+        email += domains[domain];
+    		result.push(email);
+        result.push(email);
+    	}
+
+    	shuffleArray(result);
+
+      if (result.length >= 1) {
+        curr.email = result[0];
+        curr.next = new Node("next");
+        curr = curr.next;
+        count = 1;
+      }
+
+    	for (var j = 1; j < result.length; ++j) {
+    		curr.email = result[j];
+        curr.next = new Node("end");
+    		curr = curr.next;
+        count++;
+    	}
+      count++;
+    	emails = head;
+      updatePage();
+    }
+
+    // update the frontend with the new emails and counts
+    function updatePage() {
+      var tb = document.getElementById('emailList');
+      var ct = document.getElementById('count');
+      var emailString = "";
+      var iter = emails;
+      while (iter !== null) {
+        emailString += iter.email;
+        if (iter.next !== null) { emailString += ", "; }
+        iter = iter.next;
+      }
+      tb.value = emailString;
+      ct.value = count;
+    }
+
+    // randomizes the order of an array
+    function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array;
+    }
+
+    // Use a linkedlist implementation of the list
+    // for efficient deletion from a list
+    function Node (email) {
+    	this.email = email;
+    	this.next = null;
+    }
+
+    // Use a set to keep track of already seen emails
+    function EmailSet() {
+        var keys = {}
+        var val = {};
+
+        this.add = function(str) {
+            keys[str] = val;
+        };
+
+        this.contains = function(str) {
+            return keys[str] === val;
+        };
+
+        this.remove = function(str) {
+            delete keys[str];
+        };
+    }
+
+    // iterates through the linked list and removes duplicates
+    function removeDuplicates(list) {
+      var startTime = new Date();
+    	var set = new EmailSet();
+    	if (list === null) { return; }
+    	var prev = list;
+    	var curr = list;
+      count = 0;
+    	if (prev.next === null) { return; }
+    	set.add(curr.email);
+      count = 1;
+    	curr = curr.next;
+
+    	while (curr !== null) {
+    		if (set.contains(curr.email)) {
+    			prev.next = curr.next;
+    		} else {
+    			set.add(curr.email);
+    			prev = curr;
+          count++;
+    		}
+    		curr = curr.next;
+    	}
+      var endTime = new Date();
+      var timeDiff = endTime - startTime;
+      var tm = document.getElementById('time');
+      tm.value = timeDiff + "ms";
+      updatePage();
+    }
+  </script>
+
+</body>
+</html>
