@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "removes duplicates from a list of emails",
   "main": "app.js",
+  "scripts": {
+   "start": "app.js"
+  },
   "dependencies": {
     "ejs": "^2.5.7",
     "express": "^4.15.4"

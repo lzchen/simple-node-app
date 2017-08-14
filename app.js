@@ -2,9 +2,12 @@ var express = require('express');
 var events = require('events');
 
 var app = express();
+var port = process.env.PORT || 8080;
 app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
 	res.render('index');
 })
-app.listen(8080);
+app.listen(port, function() {
+    console.log('Our app is running on http://localhost:' + port);
+});
